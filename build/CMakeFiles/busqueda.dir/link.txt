@@ -1,0 +1,1 @@
+/usr/bin/g++ -Wl,--dependency-file=CMakeFiles/busqueda.dir/link.d CMakeFiles/busqueda.dir/src/main.cpp.o CMakeFiles/busqueda.dir/src/busqueda.cpp.o CMakeFiles/busqueda.dir/src/mapa.cpp.o CMakeFiles/busqueda.dir/src/robot.cpp.o -o busqueda
