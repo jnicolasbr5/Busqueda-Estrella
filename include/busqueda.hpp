@@ -1,25 +1,26 @@
 #pragma once
 
-#include "robot.hpp"
 #include "mapa.hpp"
 #include "auxiliar.hpp"
 
 #include <list>
+#include <set>
 
 class Busqueda {
     private: 
         Mapa mapa_;
-        Robot robot_;
-        std::list<Nodo> abiertos = {};
-        std::list<Nodo> cerrados = {};
-        int funcionHeuristica(int r, int c);
-        bool nodoAdyacente(int r, int c);
-        int valorEstado(int r, int c);
+        std::set<Nodo*> abiertos = {};
+        std::vector<Nodo*> cerrados = {};
+
+        int funcionHeuristica(int r, int c) const;
+        Nodo* crearNodo(int x, int y, int casilla, Nodo* n=nullptr);
+        void iniciarBusqueda();
+        void addNodosAbiertos(Nodo *n);
 
     public: 
         Busqueda(std::ifstream& file);
         void mostrarDatos(int it);
-        void mostrarSolucion();
+        void mostrarSolucion(Nodo *n);
         
         void run();
 

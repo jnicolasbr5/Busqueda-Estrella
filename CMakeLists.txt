@@ -16,7 +16,7 @@ set(SOURCES
     src/main.cpp
     src/busqueda.cpp
     src/mapa.cpp
-    src/robot.cpp
+    include/auxiliar.hpp
 )
 
 # Create executable

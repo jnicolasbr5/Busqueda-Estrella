@@ -32,3 +32,19 @@ int Mapa::estadoCasilla(int r, int c) const {
     // Si la casilla existe en el mapa
     return matrix_[r][c];
 }
+
+void Mapa::nodoVisitado(int r, int c) {
+    matrix_[r][c] = -2;
+}
+
+std::ostream& operator<<(std::ostream& os, const Mapa& mapa) {
+    for (int i = 0; i < mapa.matrix_.size(); i++) {
+        for (int j = 0; mapa.matrix_[0].size(); j++) {
+            if (mapa.matrix_[i][j] == -2) os << "*"; 
+            else os << mapa.matrix_[i][j];
+            os << " ";
+        }
+        os << "\n";
+    }
+    return os;
+}

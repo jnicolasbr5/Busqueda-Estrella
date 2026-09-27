@@ -7,7 +7,7 @@
 #include <map>
 #include <print>
 
-Busqueda::Busqueda(std::ifstream& file) : mapa_(file), robot_(), coste_(0) {}
+Busqueda::Busqueda(std::ifstream& file) : mapa_(file) {}
 
 void Busqueda::mostrarDatos(int it) {
     std::println("Iteración {}", it);
@@ -15,100 +15,113 @@ void Busqueda::mostrarDatos(int it) {
     
     // Mostrar nodos abiertos
     std::print("Abiertos = ");
-    for (int i = 0; i < conjunto_abiertos.size(); i++) {
-        std::print("({}, {})", conjunto_abiertos[i].x, conjunto_abiertos[i].y);
-        if (i != conjunto_abiertos.size() - 1) std::cout << ", ";
+    int i = 0;
+    for (const auto& nodo : abiertos) {
+        std::print("({}, {})", nodo->x, nodo->y);
+        if (++i != abiertos.size()) std::print(", ");
     }
     std::cout << "\n";
 
     // Mostrar nodos cerrados
     std::print("Cerrados = ");
-    for (int j = 0; j < conjunto_cerrados.size(); j++) {
-        std::print("({}, {})", conjunto_cerrados[j].x, conjunto_cerrados[j].y);
-        if (j != conjunto_cerrados.size() - 1) std::cout << ", ";
+    for (int j = 0; j < cerrados.size(); j++) {
+        std::print("({}, {})", cerrados[j]->x, cerrados[j]->y);
+        if (j != cerrados.size() - 1) std::cout << ", ";
     }
     std::cout << "\n";
 
     std::println("------------------------");
 }
 
-void Busqueda::mostrarSolucion() {
+void Busqueda::mostrarSolucion(Nodo *n) {
     std::print("\nCamino: ");
-    for (int i = 0; i < conjunto_cerrados.size(); i++) {
-        std::print("({}, {})", conjunto_cerrados[i], conjunto_cerrados[j]);
-        if (i != conjunto_cerrados.size() - 1) std::print(" -> ");
+    std::vector<Coordenada> vec = {};
+    while (n != nullptr) {
+        vec.push_back({n->x, n->y});
+        mapa_.nodoVisitado(n->x, n->y);
+        n = n->padre;
     }
 
-    std::println("\nCoste: {}", coste_);
+    for (int i = vec.size() - 1; i >= 0; i--) {
+        std::print("({}, {})", vec[i].x, vec[i].y);
+        if (i != 0) std::print(" -> ");
+    }
+
+    std::println("\nCoste: {}", n->f);
 }
 
-int Busqueda::funcionHeuristica(int r, int c) {
+// Calcula la función heurística h(s)
+int Busqueda::funcionHeuristica(int r, int c) const {
     return 2 * (std::abs(mapa_.getFin().x - r) + std::abs(mapa_.getFin().y - c));
 }
 
-int Busqueda::valorEstado(int r, int c) {
-    return cerrados.back().coste_total + funcionHeuristica(r, c);
+Nodo* Busqueda::crearNodo(int x, int y, int casilla, Nodo* n=nullptr) {
+    // Creo el nodo en el heap
+    Nodo *nodo = new Nodo(x, y, casilla, n);
+
+    // Obtengo la estimación del nodo y actualizo los costes
+    int h = funcionHeuristica(x, y);
+    nodo->actualizarCostes(h);
+    return nodo;
 }
 
-bool Busqueda::nodoAdyacente(int r, int c) {
-    if (std::abs(r - robot_.getPos().x) + std::abs(c - robot_.getPos().y) == 1) return true;
-    return false;
+void Busqueda::iniciarBusqueda() {
+    int x = mapa_.getPosInicial().x, y = mapa_.getPosInicial().y;
+    Nodo *inicial = crearNodo(x, y, mapa_.estadoCasilla(x, y));
+    abiertos.insert(inicial);
+    mostrarDatos(0);
 }
 
-void Busqueda::run() {
-    robot_.setInicio(mapa_.getPosInicial());
-    abiertos.emplace_back({{mapa_.getPosInicial()}, 0});
-    int it = 0;
-    mostrarDatos(it);
-    
-    while (true) {
-        it++;
+void Busqueda::addNodosAbiertos(Nodo *n) {
+    // Derecha, arriba, izquierda, abajo
+    const int filas[] = {0, 1, 0, -1};
+    const int columnas[] = {1, 0, 1, 0};
 
-        // Tomo la posición del robot
-        int x = robot_.getPos().x, y = robot_.getPos().y;
+    for (int i =  0; i < 4; i++) {
+        const int x = n->x + filas[i];
+        const int y = n->y + columnas[i];
+        int casilla = mapa_.estadoCasilla(x, y);
 
-        // Añado la posición del robot a la secuencia
-        cerrados.push_back({x, y}, ); 
+        // Si la casilla no es un obstáculo o no está fuera del mapa
+        if (casilla > 0) {
 
-        // Añadir los nodos abiertos
-        if (mapa_.estadoCasilla(x, y + 1) > 0) { // Derecha
-            abiertos.push_back({x, y + 1}, );
-        }
-
-        if (mapa_.estadoCasilla(x + 1, y) > 0) { // Abajo
-            abiertos.push_back({x + 1, y}, );
-        }
-
-        if (mapa_.estadoCasilla(x, y - 1) > 0) { // Izquierda
-            abiertos.push_back({x, y - 1}, );
-        }
-
-        if (mapa_.estadoCasilla(x - 1, y) > 0) { // Arriba
-            abiertos.push_back({x - 1, y}, );
-        }
-
-        // Mostrar la iteración
-        mostrarDatos(it);
-
-        // Calcular el mejor nodo al que desplazarse
-        int mejor_valor = 64;
-        Coordenada prox_nodo = {-1, -1};
-        std::multimap<int, Coordenada> nodos;
-        for (int i = 0; i < conjunto_abiertos.size(); i++) {
-
-            // Si el robot puede desplazarse a ese nodo
-            if (nodoAdyacente(conjunto_abiertos[i].x, conjunto_abiertos[i].y)) {
-                int estimacion = valorEstado(conjunto_abiertos[i].x, conjunto_abiertos[i].y);
-                if (estimacion <= mejor_valor) {
-                    nodos.insert({mejor_valor, conjunto_abiertos[i]});
-                    mejor_valor = estimacion;
-                } else {
-                    // Elimina el nodo del conjunto abierto
-                    conjunto_abiertos.erase(conjunto_abiertos.begin() + i);
-                }
+            // Si no corresponde con el nodo padre
+            if (n->padre == nullptr || n->padre->x != x || n->padre->y != y) {
+                Nodo *nuevo_nodo = crearNodo(x, y, casilla);
+                abiertos.insert(nuevo_nodo);
             }
         }
     }
+}
 
-    mostrarSolucion();
+void Busqueda::run() {
+    // Nodo inicial
+    iniciarBusqueda();
+    int i = 1;
+
+    while (true) {
+        if (abiertos.empty()) {
+            std::println("\nNo se ha podido encontrar ningún camino.");
+            return;
+        }
+
+        // Se visita el nodo con mejor función
+        auto it = abiertos.begin();
+        Nodo *aux = *it;
+        abiertos.erase(it);
+        cerrados.push_back(aux); 
+
+        // Mostrar cada iteración
+        mostrarDatos(i);
+        i++;
+
+        // Comprobar si es el nodo final
+        if (aux->h == 0)    {
+            mostrarSolucion();
+            return;
+        }     
+
+        // Añadir los nodos abiertos
+        addNodosAbiertos(aux);
+    }
 }
