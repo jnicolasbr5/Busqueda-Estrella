@@ -85,12 +85,12 @@ clean: CMakeFiles/busqueda.dir/clean
 CMakeFiles/busqueda.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/busqueda.dir/build.make CMakeFiles/busqueda.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/busqueda.dir/build.make CMakeFiles/busqueda.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/nicktr/ULL/AI/P1/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target busqueda"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/nicktr/ULL/AI/P1/build/CMakeFiles --progress-num=1,2,3,4 "Built target busqueda"
 .PHONY : CMakeFiles/busqueda.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/busqueda.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/nicktr/ULL/AI/P1/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/nicktr/ULL/AI/P1/build/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/busqueda.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/nicktr/ULL/AI/P1/build/CMakeFiles 0
 .PHONY : CMakeFiles/busqueda.dir/rule
@@ -102,7 +102,7 @@ busqueda: CMakeFiles/busqueda.dir/rule
 # codegen rule for target.
 CMakeFiles/busqueda.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/busqueda.dir/build.make CMakeFiles/busqueda.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/nicktr/ULL/AI/P1/build/CMakeFiles --progress-num=1,2,3,4,5 "Finished codegen for target busqueda"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/nicktr/ULL/AI/P1/build/CMakeFiles --progress-num=1,2,3,4 "Finished codegen for target busqueda"
 .PHONY : CMakeFiles/busqueda.dir/codegen
 
 # clean rule for target.

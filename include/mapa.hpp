@@ -12,6 +12,7 @@ class Mapa {
 
     private:
         Matriz matrix_ = {};
+        std::vector<std::vector<bool>> visitados = {};
         Coordenada inicio_;
         Coordenada fin_;
 
@@ -20,9 +21,10 @@ class Mapa {
         Coordenada getPosInicial() const {return inicio_;}
         Coordenada getFin() const {return fin_;};
         int estadoCasilla(int r, int c) const;
+        void nodoRecorrido(int r, int c);
+        bool estadoVisitado(int r, int c) const;
         void nodoVisitado(int r, int c);
 
-        friend std::ostream& operator<<(std::ostream& os, const Mapa& mapa);
+        void imprimir(std::ostream& os) const;
+        void imprimirColor(std::ostream& os) const;
 };
-
-std::ostream& operator<<(std::ostream& os, const Mapa& mapa);

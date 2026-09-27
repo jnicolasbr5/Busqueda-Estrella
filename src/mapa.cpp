@@ -1,6 +1,8 @@
 #include "mapa.hpp"
 
+#include <iomanip>
 #include <iostream>
+#include <print>
 #include <sstream>
 #include <vector>
 
@@ -21,8 +23,9 @@ Mapa::Mapa(std::ifstream& file) {
             j++;
         }
         matrix_.push_back(vec);
+        visitados.push_back(std::vector<bool>(vec.size(), false));
         i++;
-    }   
+    }
 }
 
 int Mapa::estadoCasilla(int r, int c) const {
@@ -33,18 +36,42 @@ int Mapa::estadoCasilla(int r, int c) const {
     return matrix_[r][c];
 }
 
-void Mapa::nodoVisitado(int r, int c) {
+void Mapa::nodoRecorrido(int r, int c) {
     matrix_[r][c] = -2;
 }
 
-std::ostream& operator<<(std::ostream& os, const Mapa& mapa) {
-    for (int i = 0; i < mapa.matrix_.size(); i++) {
-        for (int j = 0; mapa.matrix_[0].size(); j++) {
-            if (mapa.matrix_[i][j] == -2) os << "*"; 
-            else os << mapa.matrix_[i][j];
-            os << " ";
+bool Mapa::estadoVisitado(int r, int c) const {
+    return visitados[r][c];
+}
+
+void Mapa::nodoVisitado(int r, int c) {
+    visitados[r][c] = true;
+}
+
+void Mapa::imprimir(std::ostream& os) const {
+    for (size_t i = 0; i < matrix_.size(); i++) {
+        for (size_t j = 0; j < matrix_[0].size(); j++) {
+            if (matrix_[i][j] == -2) os  << std::setw(3) << "*"; 
+            else os << std::setw(3) << matrix_[i][j];
         }
         os << "\n";
     }
-    return os;
+}
+
+void Mapa::imprimirColor(std::ostream& os) const {
+    const char* ROJO  = "\033[31m";
+    const char* AMARILLO = "\033[33m";
+    const char* CIAN = "\033[36m";
+    const char* GRIS = "\033[90m";
+    const char* RESET = "\033[0m"; 
+    for (size_t i = 0; i < matrix_.size(); i++) {
+        for (size_t j = 0; j < matrix_[0].size(); j++) {
+            if (matrix_[i][j] == -2) os << AMARILLO << std::setw(3) << "*" << RESET;
+            else if (matrix_[i][j] == -1) os << ROJO << std::setw(3) << "|" << RESET;
+            else if (matrix_[i][j] == 5) os << CIAN << std::setw(3) << matrix_[i][j] << RESET;
+            else if (matrix_[i][j] == 8) os << GRIS << std::setw(3) << matrix_[i][j] << RESET;
+            else os << std::setw(3) << matrix_[i][j];
+        }
+        os << "\n";
+    }
 }

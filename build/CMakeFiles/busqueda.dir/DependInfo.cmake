@@ -11,7 +11,6 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/nicktr/ULL/AI/P1/src/busqueda.cpp" "CMakeFiles/busqueda.dir/src/busqueda.cpp.o" "gcc" "CMakeFiles/busqueda.dir/src/busqueda.cpp.o.d"
   "/home/nicktr/ULL/AI/P1/src/main.cpp" "CMakeFiles/busqueda.dir/src/main.cpp.o" "gcc" "CMakeFiles/busqueda.dir/src/main.cpp.o.d"
   "/home/nicktr/ULL/AI/P1/src/mapa.cpp" "CMakeFiles/busqueda.dir/src/mapa.cpp.o" "gcc" "CMakeFiles/busqueda.dir/src/mapa.cpp.o.d"
-  "/home/nicktr/ULL/AI/P1/src/robot.cpp" "CMakeFiles/busqueda.dir/src/robot.cpp.o" "gcc" "CMakeFiles/busqueda.dir/src/robot.cpp.o.d"
   "" "busqueda" "gcc" "CMakeFiles/busqueda.dir/link.d"
   )
 

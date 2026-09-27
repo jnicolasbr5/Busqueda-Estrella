@@ -1,5 +1,5 @@
-CMakeFiles/busqueda.dir/src/main.cpp.o: \
- /home/nicktr/ULL/AI/P1/src/main.cpp /usr/include/stdc-predef.h \
+CMakeFiles/busqueda.dir/src/busqueda.cpp.o: \
+ /home/nicktr/ULL/AI/P1/src/busqueda.cpp /usr/include/stdc-predef.h \
  /home/nicktr/ULL/AI/P1/include/busqueda.hpp \
  /home/nicktr/ULL/AI/P1/include/mapa.hpp \
  /home/nicktr/ULL/AI/P1/include/auxiliar.hpp /usr/include/c++/15/fstream \
@@ -174,4 +174,25 @@ CMakeFiles/busqueda.dir/src/main.cpp.o: \
  /usr/include/c++/15/bits/node_handle.h \
  /usr/include/c++/15/bits/stl_set.h \
  /usr/include/c++/15/bits/stl_multiset.h \
- /usr/include/c++/15/bits/erase_if.h
+ /usr/include/c++/15/bits/erase_if.h /usr/include/c++/15/cmath \
+ /usr/include/math.h /usr/include/bits/math-vector.h \
+ /usr/include/bits/libm-simd-decl-stubs.h \
+ /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
+ /usr/include/bits/fp-fast.h /usr/include/bits/mathcalls-macros.h \
+ /usr/include/bits/mathcalls-helper-functions.h \
+ /usr/include/bits/mathcalls.h /usr/include/bits/mathcalls-narrow.h \
+ /usr/include/bits/iscanonical.h /usr/include/c++/15/bits/specfun.h \
+ /usr/include/c++/15/tr1/gamma.tcc \
+ /usr/include/c++/15/tr1/special_function_util.h \
+ /usr/include/c++/15/tr1/bessel_function.tcc \
+ /usr/include/c++/15/tr1/beta_function.tcc \
+ /usr/include/c++/15/tr1/ell_integral.tcc \
+ /usr/include/c++/15/tr1/exp_integral.tcc \
+ /usr/include/c++/15/tr1/hypergeometric.tcc \
+ /usr/include/c++/15/tr1/legendre_function.tcc \
+ /usr/include/c++/15/tr1/modified_bessel_func.tcc \
+ /usr/include/c++/15/tr1/poly_hermite.tcc \
+ /usr/include/c++/15/tr1/poly_laguerre.tcc \
+ /usr/include/c++/15/tr1/riemann_zeta.tcc /usr/include/c++/15/map \
+ /usr/include/c++/15/bits/stl_map.h \
+ /usr/include/c++/15/bits/stl_multimap.h /usr/include/c++/15/print

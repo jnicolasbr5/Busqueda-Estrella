@@ -1,6 +1,5 @@
-CMakeFiles/busqueda.dir/src/main.cpp.o: \
- /home/nicktr/ULL/AI/P1/src/main.cpp /usr/include/stdc-predef.h \
- /home/nicktr/ULL/AI/P1/include/busqueda.hpp \
+CMakeFiles/busqueda.dir/src/mapa.cpp.o: \
+ /home/nicktr/ULL/AI/P1/src/mapa.cpp /usr/include/stdc-predef.h \
  /home/nicktr/ULL/AI/P1/include/mapa.hpp \
  /home/nicktr/ULL/AI/P1/include/auxiliar.hpp /usr/include/c++/15/fstream \
  /usr/include/c++/15/bits/requires_hosted.h \
@@ -168,10 +167,6 @@ CMakeFiles/busqueda.dir/src/main.cpp.o: \
  /usr/include/c++/15/vector /usr/include/c++/15/bits/stl_uninitialized.h \
  /usr/include/c++/15/bits/stl_vector.h \
  /usr/include/c++/15/bits/stl_bvector.h \
- /usr/include/c++/15/bits/vector.tcc /usr/include/c++/15/set \
- /usr/include/c++/15/bits/stl_tree.h \
- /usr/include/c++/15/ext/aligned_buffer.h \
- /usr/include/c++/15/bits/node_handle.h \
- /usr/include/c++/15/bits/stl_set.h \
- /usr/include/c++/15/bits/stl_multiset.h \
- /usr/include/c++/15/bits/erase_if.h
+ /usr/include/c++/15/bits/vector.tcc /usr/include/c++/15/iomanip \
+ /usr/include/c++/15/bits/quoted_string.h /usr/include/c++/15/sstream \
+ /usr/include/c++/15/bits/sstream.tcc /usr/include/c++/15/print

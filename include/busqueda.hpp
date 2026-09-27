@@ -3,13 +3,13 @@
 #include "mapa.hpp"
 #include "auxiliar.hpp"
 
-#include <list>
+#include <fstream>
 #include <set>
+#include <vector>
 
 class Busqueda {
     private: 
-        Mapa mapa_;
-        std::set<Nodo*> abiertos = {};
+        std::set<Nodo*, CompararNodos> abiertos = {};
         std::vector<Nodo*> cerrados = {};
 
         int funcionHeuristica(int r, int c) const;
@@ -18,6 +18,7 @@ class Busqueda {
         void addNodosAbiertos(Nodo *n);
 
     public: 
+        Mapa mapa_;
         Busqueda(std::ifstream& file);
         void mostrarDatos(int it);
         void mostrarSolucion(Nodo *n);

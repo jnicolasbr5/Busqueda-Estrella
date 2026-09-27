@@ -201,30 +201,6 @@ src/mapa.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/busqueda.dir/build.make CMakeFiles/busqueda.dir/src/mapa.cpp.s
 .PHONY : src/mapa.cpp.s
 
-src/robot.o: src/robot.cpp.o
-.PHONY : src/robot.o
-
-# target to build an object file
-src/robot.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/busqueda.dir/build.make CMakeFiles/busqueda.dir/src/robot.cpp.o
-.PHONY : src/robot.cpp.o
-
-src/robot.i: src/robot.cpp.i
-.PHONY : src/robot.i
-
-# target to preprocess a source file
-src/robot.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/busqueda.dir/build.make CMakeFiles/busqueda.dir/src/robot.cpp.i
-.PHONY : src/robot.cpp.i
-
-src/robot.s: src/robot.cpp.s
-.PHONY : src/robot.s
-
-# target to generate assembly for a file
-src/robot.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/busqueda.dir/build.make CMakeFiles/busqueda.dir/src/robot.cpp.s
-.PHONY : src/robot.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -243,9 +219,6 @@ help:
 	@echo "... src/mapa.o"
 	@echo "... src/mapa.i"
 	@echo "... src/mapa.s"
-	@echo "... src/robot.o"
-	@echo "... src/robot.i"
-	@echo "... src/robot.s"
 .PHONY : help
 
 

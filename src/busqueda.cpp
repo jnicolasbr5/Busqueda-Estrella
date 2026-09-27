@@ -15,7 +15,7 @@ void Busqueda::mostrarDatos(int it) {
     
     // Mostrar nodos abiertos
     std::print("Abiertos = ");
-    int i = 0;
+    size_t i = 0;
     for (const auto& nodo : abiertos) {
         std::print("({}, {})", nodo->x, nodo->y);
         if (++i != abiertos.size()) std::print(", ");
@@ -30,15 +30,16 @@ void Busqueda::mostrarDatos(int it) {
     }
     std::cout << "\n";
 
-    std::println("------------------------");
+    std::println("------------------------\n");
 }
 
 void Busqueda::mostrarSolucion(Nodo *n) {
     std::print("\nCamino: ");
     std::vector<Coordenada> vec = {};
+    int coste = n->f;
     while (n != nullptr) {
         vec.push_back({n->x, n->y});
-        mapa_.nodoVisitado(n->x, n->y);
+        mapa_.nodoRecorrido(n->x, n->y);
         n = n->padre;
     }
 
@@ -47,7 +48,7 @@ void Busqueda::mostrarSolucion(Nodo *n) {
         if (i != 0) std::print(" -> ");
     }
 
-    std::println("\nCoste: {}", n->f);
+    std::println("\nCoste: {}\n", coste);
 }
 
 // Calcula la función heurística h(s)
@@ -55,7 +56,7 @@ int Busqueda::funcionHeuristica(int r, int c) const {
     return 2 * (std::abs(mapa_.getFin().x - r) + std::abs(mapa_.getFin().y - c));
 }
 
-Nodo* Busqueda::crearNodo(int x, int y, int casilla, Nodo* n=nullptr) {
+Nodo* Busqueda::crearNodo(int x, int y, int casilla, Nodo* n) {
     // Creo el nodo en el heap
     Nodo *nodo = new Nodo(x, y, casilla, n);
 
@@ -69,13 +70,14 @@ void Busqueda::iniciarBusqueda() {
     int x = mapa_.getPosInicial().x, y = mapa_.getPosInicial().y;
     Nodo *inicial = crearNodo(x, y, mapa_.estadoCasilla(x, y));
     abiertos.insert(inicial);
+    mapa_.nodoVisitado(x, y);
     mostrarDatos(0);
 }
 
 void Busqueda::addNodosAbiertos(Nodo *n) {
     // Derecha, arriba, izquierda, abajo
     const int filas[] = {0, 1, 0, -1};
-    const int columnas[] = {1, 0, 1, 0};
+    const int columnas[] = {1, 0, -1, 0};
 
     for (int i =  0; i < 4; i++) {
         const int x = n->x + filas[i];
@@ -85,10 +87,13 @@ void Busqueda::addNodosAbiertos(Nodo *n) {
         // Si la casilla no es un obstáculo o no está fuera del mapa
         if (casilla > 0) {
 
-            // Si no corresponde con el nodo padre
-            if (n->padre == nullptr || n->padre->x != x || n->padre->y != y) {
-                Nodo *nuevo_nodo = crearNodo(x, y, casilla);
-                abiertos.insert(nuevo_nodo);
+            // Si el nodo no ha sido explorado
+            if (mapa_.estadoVisitado(x, y) == false) {
+                if (n->padre == nullptr ||n->padre->x != x || n->padre->y != y) {
+                    Nodo *nuevo_nodo = crearNodo(x, y, casilla, n);
+                    abiertos.insert(nuevo_nodo);
+                    mapa_.nodoVisitado(x, y);
+                }
             }
         }
     }
@@ -109,19 +114,21 @@ void Busqueda::run() {
         auto it = abiertos.begin();
         Nodo *aux = *it;
         abiertos.erase(it);
-        cerrados.push_back(aux); 
-
-        // Mostrar cada iteración
-        mostrarDatos(i);
-        i++;
+        cerrados.push_back(aux);
+        std::println("Nodo elegido: ({}, {})", aux->x, aux->y); 
 
         // Comprobar si es el nodo final
         if (aux->h == 0)    {
-            mostrarSolucion();
+            mostrarSolucion(aux);
             return;
         }     
 
         // Añadir los nodos abiertos
         addNodosAbiertos(aux);
+
+        // Mostrar cada iteración
+        mostrarDatos(i);
+        i++;
+
     }
 }

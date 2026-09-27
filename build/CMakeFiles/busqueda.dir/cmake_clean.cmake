@@ -6,8 +6,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/busqueda.dir/src/main.cpp.o.d"
   "CMakeFiles/busqueda.dir/src/mapa.cpp.o"
   "CMakeFiles/busqueda.dir/src/mapa.cpp.o.d"
-  "CMakeFiles/busqueda.dir/src/robot.cpp.o"
-  "CMakeFiles/busqueda.dir/src/robot.cpp.o.d"
   "busqueda"
   "busqueda.pdb"
 )
