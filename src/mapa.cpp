@@ -64,6 +64,7 @@ void Mapa::imprimirColor(std::ostream& os) const {
     const char* CIAN = "\033[36m";
     const char* GRIS = "\033[90m";
     const char* RESET = "\033[0m"; 
+    os << "\n";
     for (size_t i = 0; i < matrix_.size(); i++) {
         for (size_t j = 0; j < matrix_[0].size(); j++) {
             if (matrix_[i][j] == -2) os << AMARILLO << std::setw(3) << "*" << RESET;

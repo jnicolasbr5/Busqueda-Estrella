@@ -9,32 +9,46 @@
 
 Busqueda::Busqueda(std::ifstream& file) : mapa_(file) {}
 
-void Busqueda::mostrarDatos(int it) {
-    std::println("Iteración {}", it);
-    std::println("-----------");
-    
+/**
+ * @brief Muestra el conjuntos de nodos abiertos y cerrados en cada iteración
+ * 
+ * @param it Nº iteración
+ * @param os Archivo al que se envian los datos (os.txt)
+ */
+void Busqueda::mostrarConjuntos(int it, std::ostream& os) {
+    os << "Iteración " << it << "\n";
+    os << "-----------\n";
+
     // Mostrar nodos abiertos
-    std::print("Abiertos = ");
+    os << "Abiertos = ";
     size_t i = 0;
     for (const auto& nodo : abiertos) {
-        std::print("({}, {})", nodo->x, nodo->y);
-        if (++i != abiertos.size()) std::print(", ");
+        os << "(" << nodo->x << ", " << nodo->y << ")";
+        if (++i != abiertos.size()) os << ", ";
     }
-    std::cout << "\n";
+    os << "\n";
 
     // Mostrar nodos cerrados
-    std::print("Cerrados = ");
+    os << "Cerrados = ";
     for (int j = 0; j < cerrados.size(); j++) {
-        std::print("({}, {})", cerrados[j]->x, cerrados[j]->y);
-        if (j != cerrados.size() - 1) std::cout << ", ";
+        os << "(" << cerrados[j]->x << ", " << cerrados[j]->y << ")";
+        if (j != cerrados.size() - 1) os << ", ";
     }
-    std::cout << "\n";
+    os << "\n";
 
-    std::println("------------------------\n");
+    os << "------------------------\n\n";
 }
 
-void Busqueda::mostrarSolucion(Nodo *n) {
-    std::print("\nCamino: ");
+/**
+ * @brief Muestra el camino final y su coste 
+ * 
+ * @param n Nodo final
+ * @param os Archivo al que se enviarán los datos (output.txt)
+ */
+void Busqueda::mostrarSolucion(Nodo *n, std::ostream& os) {
+    os << "-----¡CAMINO ENCONTRADO!-----\n";
+    std::cout << "\n---¡CAMINO ENCONTRADO!---";
+    os << "\nCamino: ";
     std::vector<Coordenada> vec = {};
     int coste = n->f;
     while (n != nullptr) {
@@ -44,14 +58,21 @@ void Busqueda::mostrarSolucion(Nodo *n) {
     }
 
     for (int i = vec.size() - 1; i >= 0; i--) {
-        std::print("({}, {})", vec[i].x, vec[i].y);
-        if (i != 0) std::print(" -> ");
+        os << "(" << vec[i].x << ", " << vec[i].y << ")";
+        if (i != 0) os << " -> ";
     }
 
-    std::println("\nCoste: {}\n", coste);
+    os << "\nCoste: " << coste << "\n";
 }
 
-// Calcula la función heurística h(s)
+
+/**
+ * @brief Calcula la función heurística h(s)
+ * 
+ * @param r 
+ * @param c 
+ * @return int 
+ */
 int Busqueda::funcionHeuristica(int r, int c) const {
     return 2 * (std::abs(mapa_.getFin().x - r) + std::abs(mapa_.getFin().y - c));
 }
@@ -66,14 +87,24 @@ Nodo* Busqueda::crearNodo(int x, int y, int casilla, Nodo* n) {
     return nodo;
 }
 
-void Busqueda::iniciarBusqueda() {
+/**
+ * @brief 
+ * 
+ * @param os 
+ */
+void Busqueda::iniciarBusqueda(std::ostream& os) {
     int x = mapa_.getPosInicial().x, y = mapa_.getPosInicial().y;
     Nodo *inicial = crearNodo(x, y, mapa_.estadoCasilla(x, y));
     abiertos.insert(inicial);
     mapa_.nodoVisitado(x, y);
-    mostrarDatos(0);
+    mostrarConjuntos(0, os);
 }
 
+/**
+ * @brief 
+ * 
+ * @param n 
+ */
 void Busqueda::addNodosAbiertos(Nodo *n) {
     // Derecha, arriba, izquierda, abajo
     const int filas[] = {0, 1, 0, -1};
@@ -99,14 +130,20 @@ void Busqueda::addNodosAbiertos(Nodo *n) {
     }
 }
 
-void Busqueda::run() {
+
+/**
+ * @brief 
+ * 
+ */
+void Busqueda::run(std::ostream& os) {
     // Nodo inicial
-    iniciarBusqueda();
+    iniciarBusqueda(os);
     int i = 1;
 
     while (true) {
         if (abiertos.empty()) {
             std::println("\nNo se ha podido encontrar ningún camino.");
+            os << "\nNo se ha podido encontrar ningún camino.\n";
             return;
         }
 
@@ -115,11 +152,11 @@ void Busqueda::run() {
         Nodo *aux = *it;
         abiertos.erase(it);
         cerrados.push_back(aux);
-        std::println("Nodo elegido: ({}, {})", aux->x, aux->y); 
+        std::println("Nodo {}: ({}, {})", i - 1, aux->x, aux->y); 
 
         // Comprobar si es el nodo final
         if (aux->h == 0)    {
-            mostrarSolucion(aux);
+            mostrarSolucion(aux, os);
             return;
         }     
 
@@ -127,7 +164,7 @@ void Busqueda::run() {
         addNodosAbiertos(aux);
 
         // Mostrar cada iteración
-        mostrarDatos(i);
+        mostrarConjuntos(i, os);
         i++;
 
     }

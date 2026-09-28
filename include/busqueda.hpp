@@ -4,6 +4,7 @@
 #include "auxiliar.hpp"
 
 #include <fstream>
+#include <iostream>
 #include <set>
 #include <vector>
 
@@ -14,15 +15,14 @@ class Busqueda {
 
         int funcionHeuristica(int r, int c) const;
         Nodo* crearNodo(int x, int y, int casilla, Nodo* n=nullptr);
-        void iniciarBusqueda();
+        void iniciarBusqueda(std::ostream& os);
         void addNodosAbiertos(Nodo *n);
 
     public: 
         Mapa mapa_;
         Busqueda(std::ifstream& file);
-        void mostrarDatos(int it);
-        void mostrarSolucion(Nodo *n);
+        void mostrarConjuntos(int it, std::ostream& os);
+        void mostrarSolucion(Nodo *n, std::ostream& os);
         
-        void run();
-
+        void run(std::ostream& os);
 };
