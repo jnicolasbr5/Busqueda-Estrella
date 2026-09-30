@@ -7,7 +7,9 @@
 #include <map>
 #include <print>
 
+
 Busqueda::Busqueda(std::ifstream& file) : mapa_(file) {}
+
 
 /**
  * @brief Muestra el conjuntos de nodos abiertos y cerrados en cada iteración
@@ -39,6 +41,7 @@ void Busqueda::mostrarConjuntos(int it, std::ostream& os) {
     os << "------------------------\n\n";
 }
 
+
 /**
  * @brief Muestra el camino final y su coste 
  * 
@@ -67,16 +70,26 @@ void Busqueda::mostrarSolucion(Nodo *n, std::ostream& os) {
 
 
 /**
- * @brief Calcula la función heurística h(s)
+ * @brief Calcula la función heurística h(s) = 2 * (|rf - ri| + |cf - cj|)
  * 
- * @param r 
- * @param c 
- * @return int 
+ * @param r Nº fila
+ * @param c Nº columna
+ * @return int Valor de la función heurística en esa posición
  */
 int Busqueda::funcionHeuristica(int r, int c) const {
     return 2 * (std::abs(mapa_.getFin().x - r) + std::abs(mapa_.getFin().y - c));
 }
 
+
+/**
+ * @brief Crea el nodo dada la posición y el estado
+ * 
+ * @param x Nº fila 
+ * @param y Nº columna 
+ * @param casilla Estado casilla
+ * @param n Nodo padre
+ * @return Nodo* Devuelve un puntero del nodo nuevo
+ */
 Nodo* Busqueda::crearNodo(int x, int y, int casilla, Nodo* n) {
     // Creo el nodo en el heap
     Nodo *nodo = new Nodo(x, y, casilla, n);
@@ -87,53 +100,56 @@ Nodo* Busqueda::crearNodo(int x, int y, int casilla, Nodo* n) {
     return nodo;
 }
 
+
 /**
- * @brief 
+ * @brief Ejecuta la primera iteración- Añade el nodo inicial en 
  * 
- * @param os 
+ * @param os Fichero de salida donde se mostrará la primera iteración
  */
 void Busqueda::iniciarBusqueda(std::ostream& os) {
     int x = mapa_.getPosInicial().x, y = mapa_.getPosInicial().y;
+    int xf = mapa_.getFin().x, yf = mapa_.getFin().y;
+    std::println("Inicio: ({}, {}), Fin: ({}, {})", x, y, xf, yf);
+
+    // Creo el nodo inicial y lo añado al conjunto de abiertos
     Nodo *inicial = crearNodo(x, y, mapa_.estadoCasilla(x, y));
     abiertos.insert(inicial);
     mapa_.nodoVisitado(x, y);
     mostrarConjuntos(0, os);
 }
 
+
 /**
- * @brief 
+ * @brief Añade los nodos que no han sido explorados al conjunto de abiertos 
  * 
- * @param n 
+ * @param n Puntero del nodo que se está ejecutando
  */
 void Busqueda::addNodosAbiertos(Nodo *n) {
-    // Derecha, arriba, izquierda, abajo
+    // Derecha, abajo, izquierda, arriba
     const int filas[] = {0, 1, 0, -1};
     const int columnas[] = {1, 0, -1, 0};
 
     for (int i =  0; i < 4; i++) {
+        // Obtengo los datos de los posibles nuevos nodos
         const int x = n->x + filas[i];
         const int y = n->y + columnas[i];
         int casilla = mapa_.estadoCasilla(x, y);
 
-        // Si la casilla no es un obstáculo o no está fuera del mapa
-        if (casilla > 0) {
-
-            // Si el nodo no ha sido explorado
-            if (mapa_.estadoVisitado(x, y) == false) {
-                if (n->padre == nullptr ||n->padre->x != x || n->padre->y != y) {
-                    Nodo *nuevo_nodo = crearNodo(x, y, casilla, n);
-                    abiertos.insert(nuevo_nodo);
-                    mapa_.nodoVisitado(x, y);
-                }
-            }
+        // Si la casilla no es un obstáculo o no está fuera del mapa, y la casilla no ha sido explorada
+        if (casilla > 0 && !mapa_.estadoVisitado(x, y)) {
+            Nodo *nuevo_nodo = crearNodo(x, y, casilla, n);
+            abiertos.insert(nuevo_nodo);
+            mapa_.nodoVisitado(x, y);
         }
+    
     }
 }
 
 
 /**
- * @brief 
+ * @brief Ejecuta el algoritmo
  * 
+ * @param os Archivo salida (iteraciones)
  */
 void Busqueda::run(std::ostream& os) {
     // Nodo inicial
@@ -141,6 +157,7 @@ void Busqueda::run(std::ostream& os) {
     int i = 1;
 
     while (true) {
+        // Si el conjunto de abiertos está vacío, no existe ningún
         if (abiertos.empty()) {
             std::println("\nNo se ha podido encontrar ningún camino.");
             os << "\nNo se ha podido encontrar ningún camino.\n";
@@ -152,7 +169,6 @@ void Busqueda::run(std::ostream& os) {
         Nodo *aux = *it;
         abiertos.erase(it);
         cerrados.push_back(aux);
-        std::println("Nodo {}: ({}, {})", i - 1, aux->x, aux->y); 
 
         // Comprobar si es el nodo final
         if (aux->h == 0)    {

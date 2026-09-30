@@ -174,4 +174,4 @@ CMakeFiles/busqueda.dir/src/main.cpp.o: \
  /usr/include/c++/15/bits/node_handle.h \
  /usr/include/c++/15/bits/stl_set.h \
  /usr/include/c++/15/bits/stl_multiset.h \
- /usr/include/c++/15/bits/erase_if.h
+ /usr/include/c++/15/bits/erase_if.h /usr/include/c++/15/print

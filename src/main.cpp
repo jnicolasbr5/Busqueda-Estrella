@@ -2,8 +2,13 @@
 #include "mapa.hpp"
 
 #include <fstream>
+#include <print>
 
 int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        std::println("Uso: ./busqueda <fichero_entrada>");
+        return 1;
+    }
     std::ifstream file(argv[1]);
     Busqueda busqueda(file);
     std::ofstream iteraciones("../iteraciones.txt");

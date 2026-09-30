@@ -6,11 +6,25 @@ struct Nodo {
     Nodo *padre = nullptr;
 
 
+    /**
+     * @brief Actualiza los costes h y f
+     * 
+     * @param estimacion Coste de la función heurística
+     */
     void actualizarCostes(int estimacion) {
         this->h = estimacion;   
         this->f = this->h + g;
     }
 
+
+    /**
+     * @brief Construye el nodo
+     * 
+     * @param x Nº fila
+     * @param y Nº columna
+     * @param casilla Estado casilla
+     * @param padre Puntero del nodo padre
+     */
     Nodo(int x, int y, int casilla, Nodo *padre = nullptr) : x(x), y(y), padre(padre) {
         // Si es el nodo inicial, no tendrá coste acumulado
         if (padre == nullptr) this->g = 0; 
@@ -27,9 +41,15 @@ struct Coordenada {
     int x, y;
 };
 
+
+/**
+ * @brief Compara los nodos, primero por f, después por h y finalmente por coordenadas
+ * 
+ */
 struct CompararNodos {
     bool operator()(const Nodo* a, const Nodo* b) const {
         if (a->f != b->f) return a->f < b->f;
+        if (a->h != b->h) return a->h < b->h;
         if (a->x != b->x) return a->x < b->x;
         return a->y < b->y;
     }

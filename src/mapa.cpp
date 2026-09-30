@@ -6,6 +6,12 @@
 #include <sstream>
 #include <vector>
 
+
+/**
+ * @brief Constructor. Crea el mapa con los estados y el mapa de visitados
+ * 
+ * @param file Archivo entrada con los estados de las casillas
+ */
 Mapa::Mapa(std::ifstream& file) {
     std::string fila;
     int i = 0, j = 0, numero;
@@ -28,26 +34,63 @@ Mapa::Mapa(std::ifstream& file) {
     }
 }
 
-int Mapa::estadoCasilla(int r, int c) const {
-    if (r < 0 || c < 0) return -1;
-    if (r >= matrix_.size() || c >= matrix_[0].size()) return -1;
 
-    // Si la casilla existe en el mapa
+/**
+ * @brief Devuelve el estado de la casilla
+ * 
+ * @param r Nº fila
+ * @param c Nº columna
+ * @return int Estado de la casilla
+ */
+int Mapa::estadoCasilla(int r, int c) const {
+    // La casilla no existe en el mapa
+    if (r < 0 || c < 0 || r >= matrix_.size() || c >= matrix_[0].size()) return -1;
+
+    // Si la casilla existe en el mapa, devuelve su valor
     return matrix_[r][c];
 }
 
+
+/**
+ * @brief Marca si la casilla es parte del camino final
+ * 
+ * @param r Nº fila
+ * @param c Nº columna
+ */
 void Mapa::nodoRecorrido(int r, int c) {
     matrix_[r][c] = -2;
 }
 
+
+/**
+ * @brief Devuelve si el nodo ha sido explorado o no
+ * 
+ * @param r Nº filas
+ * @param c Nº columnas
+ * @return true El nodo ha sido explorado 
+ * @return false El nodo no ha sido explorado
+ */
 bool Mapa::estadoVisitado(int r, int c) const {
     return visitados[r][c];
 }
 
+
+/**
+ * @brief Si el nodo se explora, queda marcado
+ * 
+ * @param r Nº fila
+ * @param c Nº columna
+ */
 void Mapa::nodoVisitado(int r, int c) {
     visitados[r][c] = true;
 }
 
+
+/**
+ * @brief Muestra el mapa final con el camino
+ * 
+ * @param os Archivo salida
+ */
 void Mapa::imprimir(std::ostream& os) const {
     for (size_t i = 0; i < matrix_.size(); i++) {
         for (size_t j = 0; j < matrix_[0].size(); j++) {
@@ -58,6 +101,12 @@ void Mapa::imprimir(std::ostream& os) const {
     }
 }
 
+
+/**
+ * @brief Muestra el mapa final con el camino a color
+ * 
+ * @param os std::cout, muestro por pantalla
+ */
 void Mapa::imprimirColor(std::ostream& os) const {
     const char* ROJO  = "\033[31m";
     const char* AMARILLO = "\033[33m";
