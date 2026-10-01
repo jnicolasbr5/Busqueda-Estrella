@@ -17,7 +17,6 @@ class Busqueda {
         Nodo* crearNodo(int x, int y, int casilla, Nodo* n=nullptr);
         void iniciarBusqueda(std::ostream& os);
         void addNodosAbiertos(Nodo *n);
-        void tieneMejorCoste(Nodo *n);
 
     public: 
         Mapa mapa_;

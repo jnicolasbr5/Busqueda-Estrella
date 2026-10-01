@@ -66,7 +66,6 @@ void Busqueda::mostrarSolucion(Nodo *n, std::ostream& os) {
     }
 
     os << "\nCoste: " << coste << "\n";
-    std::println("\nCoste: {}", coste);
 }
 
 
@@ -121,27 +120,6 @@ void Busqueda::iniciarBusqueda(std::ostream& os) {
 
 
 /**
- * @brief Si el nuevo nodo tiene un coste menor (misma posición), reemplaza el nodo en el conjunto de abiertos.
- * 
- * @param nuevo Nodo nuevo a comprobar
- */
-void Busqueda::tieneMejorCoste(Nodo* nuevo) {
-    for (auto it = abiertos.begin(); it != abiertos.end(); it++) {
-        Nodo *n = *it;
-
-        if (n->x == nuevo->x && n->y == nuevo->y) {
-            if (nuevo->f < n->f) {
-                abiertos.erase(it);
-                abiertos.insert(nuevo);
-                delete n;
-            }
-            return;
-        }
-    }
-}
-
-
-/**
  * @brief Añade los nodos que no han sido explorados al conjunto de abiertos 
  * 
  * @param n Puntero del nodo que se está ejecutando
@@ -157,18 +135,13 @@ void Busqueda::addNodosAbiertos(Nodo *n) {
         const int y = n->y + columnas[i];
         int casilla = mapa_.estadoCasilla(x, y);
 
-        // Si la casilla no es un obstáculo o no está fuera del mapa
-        if (casilla > 0) {
+        // Si la casilla no es un obstáculo o no está fuera del mapa, y la casilla no ha sido explorada
+        if (casilla > 0 && !mapa_.estadoVisitado(x, y)) {
             Nodo *nuevo_nodo = crearNodo(x, y, casilla, n);
-
-            // Si la casilla no ha sido explorada
-            if (!mapa_.estadoVisitado(x, y)) {
-                abiertos.insert(nuevo_nodo);
-                mapa_.nodoVisitado(x, y);
-            }   else { // Si ha sido explorado, comprobar cual tiene menor coste
-                tieneMejorCoste(nuevo_nodo);
-            }
+            abiertos.insert(nuevo_nodo);
+            mapa_.nodoVisitado(x, y);
         }
+    
     }
 }
 
